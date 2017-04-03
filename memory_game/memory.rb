@@ -29,8 +29,12 @@ class MemoryGame
   def get_player_input
     pos = nil
 
-    until pos && valid_pos?(pos)
+    begin
       pos = player.get_input
+      valid_pos?(pos)
+    rescue ArgumentError => e
+      puts "Error #{e.message}"
+      retry
     end
 
     pos
@@ -38,7 +42,7 @@ class MemoryGame
 
   def make_guess(pos)
     revealed_value = board.reveal(pos)
-    player.receive_revealed_card(pos, revealed_value) 
+    player.receive_revealed_card(pos, revealed_value)
     board.render
 
     compare_guess(pos)
@@ -62,7 +66,7 @@ class MemoryGame
   end
 
   def valid_pos?(pos)
-    pos.is_a?(Array) &&
+    raise ArgumentError.new "Invalid Pos" unless pos.is_a?(Array) &&
       pos.count == 2 &&
       pos.all? { |x| x.between?(0, board.size - 1) }
   end
@@ -74,5 +78,5 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   size = ARGV.empty? ? 4 : ARGV.shift.to_i
-  MemoryGame.new(ComputerPlayer.new(size), size).play
+  MemoryGame.new(HumanPlayer.new(size), size).play
 end
