@@ -4,9 +4,12 @@ require_relative 'stepable'
 class King < Piece
   include Stepable
 
-  def initialize(board, pos)
-    @unicode = 'U+2654'
-    super(board, pos, :king)
+  def initialize(board, pos, color)
+    super(board, pos, color, '♔', :king)
+  end
+
+  def to_s
+    @unicode
   end
 
   def moves_diffs
@@ -20,5 +23,5 @@ if __FILE__ == $PROGRAM_NAME
   p k.moves_diffs
   puts
   p k.moves
-  p k
+  print k
 end

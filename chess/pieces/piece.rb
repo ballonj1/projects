@@ -1,13 +1,16 @@
 class Piece
-  def initialize(board, pos, color, symbol = nil)
+  attr_reader :color
+
+  def initialize(board, pos, color, unicode = nil, symbol = nil)
     @board = board
     @pos = pos
     @color = color
+    @unicode = unicode
     @symbol = symbol
   end
 
   def to_s
-    @symbol.to_s
+    @unicode
   end
 
   def empty?

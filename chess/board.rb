@@ -1,4 +1,4 @@
-require_relative 'piece'
+require_relative 'pieces/piece'
 
 class Board
   attr_reader :grid
@@ -55,7 +55,7 @@ class Board
     piece_rows = [0, 1, 6, 7]
     @grid.each_with_index do |row, i|
       row.each_index do |j|
-        @grid[i][j] = piece_rows.include?(i) ? Piece.new : nil
+        @grid[i][j] = piece_rows.include?(i) ? Piece.new(self, [i, j], 'white', '', :win) : nil
       end
     end
   end
