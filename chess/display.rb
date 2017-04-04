@@ -27,9 +27,9 @@ class Display
       row.each_index do |j|
         case
         when [i, j] == @cursor.cursor_pos && @board[[i, j]].nil?
-          print ' - '.colorize(:red)
+          print ' - '.colorize(:color => :white, :background => :black)
         when [i, j] == @cursor.cursor_pos && @board[[i, j]].is_a?(Piece)
-          print ' P '.colorize(:red)
+          print ' P '.colorize(:color => :white, :background => :black)
         when @board[[i, j]].nil?
           print ' - '
         when @board[[i, j]].is_a?(Piece)
