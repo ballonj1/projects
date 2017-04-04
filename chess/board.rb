@@ -52,10 +52,11 @@ class Board
   end
 
   def make_starting_grid
+    null_piece = NullPiece.instance
     piece_rows = [0, 1, 6, 7]
     @grid.each_with_index do |row, i|
       row.each_index do |j|
-        @grid[i][j] = piece_rows.include?(i) ? Piece.new(self, [i, j], 'white', '', :win) : nil
+        @grid[i][j] = piece_rows.include?(i) ? Piece.new(self, [i, j], 'white', '', :win) : null_piece
       end
     end
   end

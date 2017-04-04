@@ -8,10 +8,6 @@ class King < Piece
     super(board, pos, color, '♔', :king)
   end
 
-  def to_s
-    @unicode
-  end
-
   def moves_diffs
     [[1, 0], [1, 1], [0, 1], [-1, 0], [-1, -1],
      [0, -1], [1, -1], [-1, 1]]

@@ -1,16 +1,10 @@
-require_relative 'piece'
 require_relative 'slideable'
-require_relative '../board'
 
 class Queen < Piece
   include Slideable
 
   def initialize(board, pos, color)
     super(board, pos, color, '♕', :queen)
-  end
-
-  def to_s
-    @unicode
   end
 
   def moves_dirs
