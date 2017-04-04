@@ -1,6 +1,8 @@
 require_relative 'piece'
 
 class Board
+  attr_reader :grid
+
   def initialize
     @grid = Array.new(8) { Array.new(8) }
     make_starting_grid
@@ -38,6 +40,11 @@ class Board
 
   end
 
+  def in_bounds?(pos)
+    x, y = pos
+    (0..7).cover?(x) && (0..7).cover?(y)
+  end
+
   protected
 
   def find_king(color)
@@ -47,7 +54,7 @@ class Board
   def make_starting_grid
     piece_rows = [0, 1, 6, 7]
     @grid.each_with_index do |row, i|
-      row.each_with_index do |col, j|
+      row.each_index do |j|
         @grid[i][j] = piece_rows.include?(i) ? Piece.new : nil
       end
     end

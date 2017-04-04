@@ -20,7 +20,7 @@ KEYMAP = {
   "\e[D" => :left,
   "\177" => :backspace,
   "\004" => :delete,
-  "\u0003" => :ctrl_c,
+  "q" => :ctrl_c,
 }
 
 MOVES = {
@@ -76,8 +76,34 @@ class Cursor
   end
 
   def handle_key(key)
+    case key
+    when :return || :space
+      @cursor_pos
+    when :left
+      update_pos(MOVES[:left])
+      nil
+    when :right
+      update_pos(MOVES[:right])
+      nil
+    when :up
+      update_pos(MOVES[:up])
+      nil
+    when :down
+      update_pos(MOVES[:down])
+      nil
+    when :control_c
+      p 'hkjsadfh'
+      exit(0)
+      nil
+    end
   end
 
   def update_pos(diff)
+    new_x = @cursor_pos[0] + diff[0]
+    new_y = @cursor_pos[1] + diff[1]
+
+    if @board.in_bounds?([new_x, new_y])
+      @cursor_pos = [new_x, new_y]
+    end
   end
 end
