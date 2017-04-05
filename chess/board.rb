@@ -1,5 +1,4 @@
-require_relative 'pieces/piece'
-require_relative 'pieces/'
+Dir["pieces/*.rb"].each { |file| require_relative file }
 
 class Board
   attr_reader :grid
@@ -18,6 +17,7 @@ class Board
     @grid[x][y]
   end
 
+
   def []=(pos, piece)
     x, y = pos
     @grid[x][y] = piece
@@ -28,17 +28,40 @@ class Board
   end
 
   def move_piece(color, from_pos, to_pos)
-    if self[from_pos] == nil || self[to_pos] != nil
-      raise StandardError.new "Invalid move"
+    if self[from_pos].symbol.nil?
+      raise StandardError.new "Must select a piece."
+    elsif self[from_pos].color != color
+      raise StandardError.new "You must select your own piece!"
+    elsif self[to_pos].color == color
+      raise StandardError.new "You can't attack your own piece!"
+    elsif self[from_pos].moves.none? { |pos| pos == to_pos }
+      raise StandardError.new "This is not a valid move."
     end
   end
 
   def move_piece!(from_pos, to_pos)
-
+    self[from_pos], self[to_pos] = self[to_pos], self[from_pos]
   end
 
-  def checkmate
+  def in_check?(color)
+    # find king index
+    @grid.each_index do |row|
+      row.each_index do |col|
+        if @grid[row][col].color != nil && @grid[row][col].color != color
+          return true if @grid[row][col].moves.include(king_location)
+        end
+      end
+    end
 
+  def checkmate
+    @grid.each_index do |row|
+      row.each_index do |col|
+        if @grid[row][col].color != nil && @grid[row][col].color != color
+          return false if @grid[row][col].moves > 0
+        end
+      end
+    end
+    true
   end
 
   def in_bounds?(pos)
@@ -86,7 +109,7 @@ class Board
 
 
     (2..5).each do |row|
-      row.each_index do |col|
+      @grid[row].each_index do |col|
         @grid[row][col] = null_piece
       end
     end
@@ -95,5 +118,5 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   b = Board.new
-  print b
+  p b
 end
