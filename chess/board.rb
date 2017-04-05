@@ -1,4 +1,5 @@
 require_relative 'pieces/piece'
+require_relative 'pieces/'
 
 class Board
   attr_reader :grid
@@ -53,11 +54,46 @@ class Board
 
   def make_starting_grid
     null_piece = NullPiece.instance
-    piece_rows = [0, 1, 6, 7]
-    @grid.each_with_index do |row, i|
-      row.each_index do |j|
-        @grid[i][j] = piece_rows.include?(i) ? Piece.new(self, [i, j], 'white', '', :win) : null_piece
+
+    top_row = [
+      Rook.new(self, [0, 0], 'black'),
+      Knight.new(self, [0, 1], 'black'),
+      Bishop.new(self, [0, 2], 'black'),
+      King.new(self, [0, 3], 'black'),
+      Queen.new(self, [0, 4], 'black'),
+      Bishop.new(self, [0, 5], 'black'),
+      Knight.new(self, [0, 6], 'black'),
+      Rook.new(self, [0, 7], 'black')
+    ]
+
+    @grid[0] = top_row
+
+    bot_row = [
+      Rook.new(self, [7, 0], 'white'),
+      Knight.new(self, [7, 1], 'white'),
+      Bishop.new(self, [7, 2], 'white'),
+      King.new(self, [7, 3], 'white'),
+      Queen.new(self, [7, 4], 'white'),
+      Bishop.new(self, [7, 5], 'white'),
+      Knight.new(self, [7, 6], 'white'),
+      Rook.new(self, [7, 7], 'white')
+    ]
+
+    @grid[6] = bot_row
+
+    @grid[1].each_index { |idx| @grid[1][idx] = Pawn.new(self, [1, idx], 'black') }
+    @grid[6].each_index { |idx| @grid[6][idx] = Pawn.new(self, [6, idx], 'white') }
+
+
+    (2..5).each do |row|
+      row.each_index do |col|
+        @grid[row][col] = null_piece
       end
     end
   end
+end
+
+if __FILE__ == $PROGRAM_NAME
+  b = Board.new
+  print b
 end
